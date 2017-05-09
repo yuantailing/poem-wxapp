@@ -5,10 +5,11 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
+    head_default: '藏头诗题',
     headstr: null,
     yan: 7,
     strings: ['先输入四字题目', '然后点击开始按钮'],
-    head_default: '藏头诗题',
+    last_result: null,
     ajax_in_progress: false,
   },
   //事件处理函数
@@ -28,7 +29,7 @@ Page({
     })
   },
   bindSubmitText: function () {
-    if (this.ajax_in_progress) return;
+    if (this.data.ajax_in_progress) return;
     var headstr = this.data.headstr || this.data.head_default;
     var yan = this.data.yan;
     wx.showToast({
@@ -43,7 +44,7 @@ Page({
     var action = 'head';
     var that = this;
     wx.request({
-      url: apiurl + action + '/', //仅为示例，并非真实的接口地址
+      url: apiurl + action + '/',
       data: {
         yan: yan,
         headstr: headstr,
@@ -63,6 +64,7 @@ Page({
         } else {
           that.setData({
             strings: data.msg[0],
+            last_result: data.msg[0],
           });
         }
         wx.hideToast();
@@ -86,5 +88,11 @@ Page({
   },
   onLoad: function () {
     console.log('onLoad');
-  }
+  },
+  onShareAppMessage: function() {
+    return {
+      title: this.data.last_result ? this.data.last_result.join('，') : '藏头诗 - 小沅作诗',
+      path: 'pages/index/index',
+    };
+  },
 })
