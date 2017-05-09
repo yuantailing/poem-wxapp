@@ -43,6 +43,18 @@ Page({
     var apiurl = 'https://dsa.cs.tsinghua.edu.cn/~yuan/shared/site/proxy.php/http://60.205.170.105:8000/poem/api/';
     var action = 'head';
     var that = this;
+    var onFail = function (res) {
+      that.setData({
+        motto: 'ajax fail',
+      });
+      that.setData({
+        strings: ['服务器错误，', '请稍候再试'],
+      });
+      wx.hideToast();
+      that.setData({
+        ajax_in_progress: false,
+      });
+    };
     wx.request({
       url: apiurl + action + '/',
       data: {
@@ -53,6 +65,8 @@ Page({
         'content-type': 'application/json',
       },
       success: function (res) {
+        if (res.statusCode != 200)
+          return onFail(res);
         that.setData({
           motto: 'ajax success',
         });
@@ -72,18 +86,7 @@ Page({
           ajax_in_progress: false,
         });
       },
-      fail: function (res) {
-        that.setData({
-          motto: 'ajax fail',
-        });
-        that.setData({
-          strings: ['服务器错误，', '请稍候再试'],
-        });
-        wx.hideToast();
-        that.setData({
-          ajax_in_progress: false,
-        });
-      }
+      fail: onFail,
     })
   },
   onLoad: function () {
