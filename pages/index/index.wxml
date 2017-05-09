@@ -1,10 +1,33 @@
 <!--index.wxml-->
 <view class="container">
-  <view  bindtap="bindViewTap" class="userinfo">
+  <view  bindtap="bindViewTap" class="userinfo" style="display: none;">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>
-  <view class="usermotto">
+  <view bindtap="bindSubmitText" style="margin: 5px 0 20px 0;">
+    <image class="image" style="width: 100px; height: 100px;" src="../../resources/img/logo.png"/>
+  </view>
+  <view style="text-align: center;">
+      <view>
+        <input class="weui-input" style="height: 30px; font-size: 26px;" auto-focus maxlength="10" bindinput="bindHeadstrInput" placeholder="{{ head_default }}"/>
+      </view>
+      <view style="margin-top: 30px;">
+        <view>
+          <text style="padding-right: 20px;">五言</text>
+          <switch checked bindchange="bindYanChange"/>
+          <text style="padding-left: 20px;">七言</text>
+        </view>
+        <view bindtap="bindSubmitText" style="position: relative; left: 10%; width: 80%; font-size: 22px; font-family: 黑体; color: white; background-color: green; border-radius: 7px; padding: 8px 0 8px 0; margin-top: 20px;">
+          开始
+        </view>
+      </view>
+  </view>
+  <view style="margin-top: 40px;">
+    <block wx:for="{{ strings }}" wx:for-item="str" wx:key="*this">
+      <text style="margin: 10px; font-size: 24px; font-family: KaiTi; display: block;">{{ str }}</text>
+    </block>
+  </view>
+  <view class="usermotto" style="display: none;">
     <text class="user-motto">{{motto}}</text>
   </view>
 </view>
